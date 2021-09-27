@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { RestService } from 'src/app/services/rest.service';
 
 // core components
 import {
@@ -19,15 +20,28 @@ export class HorasComponent implements OnInit {
   public datasets: any;
   public data: any;
   public pieData:any;
+
+  // Data for the charts
+  public diaData;
+  public semanaData;
+  public mesData;
+  public usoData;
+  public colasData;
+
+  // Charts
   public diaChart;
   public semanaChart;
   public mesChart;
   public usoChart;
   public colasChart;
+
+
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
   private _seed = Date.now();
+
+  constructor(private restService: RestService){}
 
   rand(min, max) {
     min = min || 0;
@@ -113,64 +127,178 @@ export class HorasComponent implements OnInit {
     parseOptions(Chart, chartOptions());
 
     let chartColas = document.getElementById('chart-colas');
+    let chartSemana = document.getElementById('chart-semana');
+    let chartMes = document.getElementById('chart-mes');
+    let chartDia = document.getElementById('chart-dia');
+    let chartUso = document.getElementById('chart-uso');
+
+    // Inicializando graficos
+    this.diaData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets: [
+        { 
+          label:'Data',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
+    this.semanaData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets: [
+        { 
+          label:'Data',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
+    this.mesData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets: [
+        { 
+          label:'Data',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+    
+    this.usoData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets: [
+        { 
+          label:'Data',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
+    this.colasData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets: [
+        { 
+          label:'Data',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
     this.colasChart = new Chart(chartColas,{
       type:'bar',
       options: chartExample2.options,
-      data: chartExample2.data
+      data: this.colasData
     })
 
-    let chartSemana = document.getElementById('chart-semana');
+    
     this.semanaChart = new Chart(chartSemana,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.semanaData
     })
 
-    let chartMes = document.getElementById('chart-mes');
+    
     this.mesChart = new Chart(chartMes,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.mesData
     })
-
-    let chartDia = document.getElementById('chart-dia');
+    
     this.diaChart = new Chart(chartDia,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
-    })
+      data: this.diaData
+    });
 
-    let chartUso = document.getElementById('chart-uso');
     this.usoChart = new Chart(chartUso,{
       type:'bar',
-      options: {
-        indexAxis: 'y',
-        // Elements options apply to all of the options unless overridden in a dataset
-        // In this case, we are setting the border of each horizontal bar to be 2px wide
-        elements: {
-          bar: {
-            borderWidth: 2,
-          }
-        },
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'right',
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Horizontal Bar Chart'
-          }
-        }
-      },
-      data: chartExample2.data
+      options: chartExample2.options,
+      data: this.usoData
     })
 
+    this.updateOptions();
     
   }
 
 
   public updateOptions() {
+    this.restService.getDateCPU(this.clicked).subscribe((data:any) => {
+      
+      const fechas = []; // Fechas encontradas en el analisis
+      const horas = [];
+      data.forEach(d => {
+        fechas.push(d.Date);
+        horas.push(d.Hours);
+      });
+
+
+      this.diaChart.data.labels = fechas;
+      this.diaChart.data.datasets[0].data = horas;
+
+      this.diaChart.update();
+
+    });
+
+    this.restService.getWeekCPU(this.clicked).subscribe((data:any)=>{
+      const fechas = []; // Fechas encontradas en el analisis
+      const horas = [];
+      data.forEach(d => {
+        fechas.push(d.Date);
+        horas.push(d.Hours);
+      });
+
+      this.semanaChart.data.labels = fechas;
+      this.semanaChart.data.datasets[0].data = horas;
+
+      this.semanaChart.update(); 
+    });
+
+    this.restService.getMonthCPU(this.clicked).subscribe((data:any)=>{
+      const fechas = []; // Fechas encontradas en el analisis
+      const horas = [];
+      data.forEach(d => {
+        fechas.push(d.Date);
+        horas.push(d.Hours);
+      });
+
+      this.mesChart.data.labels = fechas;
+      this.mesChart.data.datasets[0].data = horas;
+
+      this.mesChart.update();  
+    });
+
+    this.restService.getPartitionCPU(this.clicked).subscribe((data:any)=>{
+      const particiones = []; // Fechas encontradas en el analisis
+      const horas = [];
+      data.forEach(d => {
+        particiones.push(d.Partition);
+        horas.push(d.Hours);
+      });
+
+      this.usoChart.data.labels = particiones;
+      this.usoChart.data.datasets[0].data = horas;
+
+      this.usoChart.update();   
+    });
+
+    this.restService.getQueueCPU(this.clicked).subscribe((data:any)=>{
+      const colas = []; // Fechas encontradas en el analisis
+      const horas = [];
+      data.forEach(d => {
+        colas.push(d.Queue);
+        horas.push(d.Hours);
+      });
+
+      this.colasChart.data.labels = colas;
+      this.colasChart.data.datasets[0].data = horas;
+
+      this.colasChart.update();   
+    })
+
   }
 
 }

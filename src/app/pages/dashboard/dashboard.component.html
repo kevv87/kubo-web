@@ -9,7 +9,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">Trabajos enviados</h5>
-                  <span class="h2 font-weight-bold mb-0">350,897</span>
+                  <span class="h2 font-weight-bold mb-0">{{jobs}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -30,7 +30,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">Horas de cómputo</h5>
-                  <span class="h2 font-weight-bold mb-0">2,356</span>
+                  <span class="h2 font-weight-bold mb-0">{{hours}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -51,7 +51,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">Usuarios activos</h5>
-                  <span class="h2 font-weight-bold mb-0">924</span>
+                  <span class="h2 font-weight-bold mb-0">{{users}}</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -72,7 +72,7 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase text-muted mb-0">Uso de los nodos</h5>
-                  <span class="h2 font-weight-bold mb-0">49,65%</span>
+                  <span class="h2 font-weight-bold mb-0">{{percentage}}%</span>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -104,13 +104,13 @@
               <ul class="nav nav-pills justify-content-end">
                 <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Month</span>
+                    <span class="d-none d-md-block">Mes</span>
                     <span class="d-md-none">M</span>
                   </a>
                 </li>
                 <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
+                    <span class="d-none d-md-block">Año</span>
                     <span class="d-md-none">W</span>
                   </a>
                 </li>
@@ -138,13 +138,13 @@
               <ul class="nav nav-pills justify-content-end">
                 <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Month</span>
+                    <span class="d-none d-md-block">Mes</span>
                     <span class="d-md-none">M</span>
                   </a>
                 </li>
                 <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
+                    <span class="d-none d-md-block">Año</span>
                     <span class="d-md-none">W</span>
                   </a>
                 </li>
@@ -172,13 +172,13 @@
               <ul class="nav nav-pills justify-content-end">
                 <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Month</span>
+                    <span class="d-none d-md-block">Mes</span>
                     <span class="d-md-none">M</span>
                   </a>
                 </li>
                 <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
+                    <span class="d-none d-md-block">Año</span>
                     <span class="d-md-none">W</span>
                   </a>
                 </li>
@@ -206,13 +206,13 @@
               <ul class="nav nav-pills justify-content-end">
                 <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Month</span>
+                    <span class="d-none d-md-block">Mes</span>
                     <span class="d-md-none">M</span>
                   </a>
                 </li>
                 <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
                   <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
+                    <span class="d-none d-md-block">Año</span>
                     <span class="d-md-none">W</span>
                   </a>
                 </li>
@@ -244,7 +244,7 @@
         <div class="card-body">
           <!-- Chart -->
           <div class="chart">
-            <canvas id="chart-orders" class="chart-canvas"></canvas>
+            <canvas id="uso-colas" class="chart-canvas"></canvas>
           </div>
         </div>
       </div>

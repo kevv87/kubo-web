@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { RestService } from 'src/app/services/rest.service';
+import { isJSDocThisTag } from 'typescript';
 
 // core components
 import {
@@ -19,15 +21,34 @@ export class DashboardComponent implements OnInit {
   public datasets: any;
   public data: any;
   public pieData:any;
+
+  // Numbers
+  public jobs;
+  public users;
+  public hours;
+  public percentage;
+
+  // Data for the charts
+  public andalanData;
+  public nukwaData;
+  public nuData;
+  public dribeData;
+
+  // Charts
   public salesChart;
   public nuChart;
   public nukwaChart;
   public andalanChart;
   public dribeChart;
+  public colasChart;
+
+  // Month/Year buttons
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
   private _seed = Date.now();
+
+  constructor(private restService: RestService){}
 
   rand(min, max) {
     min = min || 0;
@@ -116,49 +137,145 @@ export class DashboardComponent implements OnInit {
     let chartAndalan = document.getElementById('uso-andalan');
     let chartDribe = document.getElementById('uso-dribe');
 
+    // Inicializando graficos
+    this.andalanData = {
+      labels: ['Usado', 'Sin usar'],
+      datasets:[
+        { 
+          label:'Dataset 1',
+          data:[1,0],
+          backgroundColor: Object.values(CHART_COLORS)
+        }
+      ]
+    };
+
+    this.nukwaData = {
+      labels: ['Usado', 'Sin usar'],
+      datasets:[
+        { 
+          label:'Dataset 1',
+          data:[1,0],
+          backgroundColor: Object.values(CHART_COLORS)
+        }
+      ]
+    };
+    this.dribeData = {
+      labels: ['Usado', 'Sin usar'],
+      datasets:[
+        { 
+          label:'Dataset 1',
+          data:[1,0],
+          backgroundColor: Object.values(CHART_COLORS)
+        }
+      ]
+    };
+    this.nuData = {
+      labels: ['Usado', 'Sin usar'],
+      datasets:[
+        { 
+          label:'Dataset 1',
+          data:[1,0],
+          backgroundColor: Object.values(CHART_COLORS)
+        }
+      ]
+    };
+
     this.nuChart = new Chart(chartNu, {
       type:'pie',
-      data:this.pieData,
+      data:this.nuData,
       options:exampleOptions,
     });
 
     this.nukwaChart = new Chart(chartNukwa,{
       type:'pie',
-      data:this.pieData,
+      data:this.nukwaData,
       options:exampleOptions,
     });
+    
 
     this.andalanChart = new Chart(chartAndalan, {
       type:'pie',
-      data:this.pieData,
+      data:this.andalanData,
       options:exampleOptions,
     });
 
     this.dribeChart = new Chart(chartDribe, {
       type:'pie',
-      data:this.pieData,
+      data:this.dribeData,
       options:exampleOptions,
     })
 
-
-
-    let chartOrders = document.getElementById('chart-orders');
+    const colasData = {
+      labels: ["Dribe", "Andalan", "Nu", "Nukwa"],
+      datasets: [
+        {
+          label: "Uso de colas",
+          data: [1, 1, 1, 1],
+        }
+      ]
+    };
 
     parseOptions(Chart, chartOptions());
 
-    let ordersChart = new Chart(chartOrders, {
+    let chartColas = document.getElementById('uso-colas');
+    this.colasChart = new Chart(chartColas, {
       type: 'bar',
       options: chartExample2.options,
-      data: chartExample2.data
+      data: colasData
     });
 
-    let chartSales = document.getElementById('chart-sales');
-
+    // Fetching data
+    this.updateOptions();
     
   }
 
 
   public updateOptions() {
+
+    this.colasChart.data.labels = ["Andalan", "Dribe", "Nu", "Nukwa"];
+    this.colasChart.update();
+
+    // Fetching data
+    this.restService.getResumen(this.clicked).subscribe((data:any) => {
+      this.users = data.Usuarios.Total;
+      this.hours = data.Horas.Total;
+      this.hours = this.hours.match(/^-?\d+(?:\.\d{0,2})?/);
+      this.jobs = data.Trabajos.Total;
+    })
+
+    this.restService.getQueuePercentage(this.clicked).subscribe((data:any) => {
+      // Actualizando los graficos de pastel
+      const dataAndalan = [data.andalan.Percentage, data.andalan.Total];
+      const dataNu = [data.nu.Percentage, data.nu.Total];
+      const dataNukwa = [data.nukwa.Percentage, data.nukwa.Total];
+      const dataDribe = [data.dribe.Percentage, data.dribe.Total];
+
+      this.andalanChart.data.datasets[0].data = dataAndalan;
+      this.nuChart.data.datasets[0].data = dataNu;
+      this.nukwaChart.data.datasets[0].data = dataNukwa;
+      this.dribeChart.data.datasets[0].data = dataDribe;
+
+      this.andalanChart.update();
+      this.nuChart.update();
+      this.nukwaChart.update();
+      this.dribeChart.update();
+
+      this.percentage = (((parseFloat(dataAndalan[0])+parseFloat(dataNu[0])+parseFloat(dataNukwa[0])+parseFloat(dataDribe[0]))/400)*100).toFixed(2);
+
+      // Actualizando grafico de barra 
+      const arrayColas = [
+        {cola:data.andalan.Queue, percentage:parseFloat(data.andalan.Percentage)},
+        {cola:data.nukwa.Queue, percentage:parseFloat(data.nukwa.Percentage)},
+        {cola:data.dribe.Queue, percentage:parseFloat(data.dribe.Percentage)},
+        {cola:data.nu.Queue, percentage:parseFloat(data.nu.Percentage)}
+      ];
+
+      arrayColas.sort((a, b) =>-a.percentage+b.percentage);
+      this.colasChart.data.labels = arrayColas.map(cola=>cola.cola);
+      this.colasChart.data.datasets[0].data = arrayColas.map(cola=>cola.percentage);
+      this.colasChart.update();
+
+    }); 
   }
 
 }
