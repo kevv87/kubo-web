@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NGB_TIMEPICKER_I18N_FACTORY } from '@ng-bootstrap/ng-bootstrap/timepicker/timepicker-i18n';
 import Chart from 'chart.js';
 import { RestService } from 'src/app/services/rest.service';
+import * as moment from 'moment';
+
 
 // core components
 import {
@@ -9,6 +12,7 @@ import {
   chartExample1,
   chartExample2
 } from "../../variables/charts";
+
 
 @Component({
   selector: 'app-horas',
@@ -230,11 +234,22 @@ export class HorasComponent implements OnInit {
       
       const fechas = []; // Fechas encontradas en el analisis
       const horas = [];
+
+      // Sorteando las fechas en orden ascendente
+      let fechaA, fechaB;
+      data.sort((a,b)=>{
+        fechaA = moment(a.Date,"YYYY-MM-DD");
+        fechaB = moment(b.Date, "YYYY-MM-DD");
+        if(fechaA.isBefore(fechaB)){
+          return -1;
+        }else{
+          return 1;
+        }
+      })
       data.forEach(d => {
         fechas.push(d.Date);
         horas.push(d.Hours);
       });
-
 
       this.diaChart.data.labels = fechas;
       this.diaChart.data.datasets[0].data = horas;
