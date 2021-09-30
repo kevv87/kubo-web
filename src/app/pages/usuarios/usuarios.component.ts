@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { RestService } from 'src/app/services/rest.service';
 
 // core components
 import {
@@ -19,6 +20,13 @@ export class UsuariosComponent implements OnInit {
   public datasets: any;
   public data: any;
   public pieData:any;
+
+  // Datos de los graficos
+  public usuariosData;
+  public gruposData;
+  public trabajosData;
+
+  // Graficos
   public usuariosChart;
   public gruposChart;
   public trabajosChart;  
@@ -26,6 +34,8 @@ export class UsuariosComponent implements OnInit {
   public clicked1: boolean = false;
 
   private _seed = Date.now();
+
+  constructor(private restService: RestService){}
 
   rand(min, max) {
     min = min || 0;
@@ -108,33 +118,119 @@ export class UsuariosComponent implements OnInit {
 
     this.data = this.datasets[0];
 
+    // Inicializando datos de graficos
+
+    this.usuariosData = {
+      labels: ['Red', 'Orange'],
+      datasets: [
+        {
+          label: 'Usuario',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
+    this.gruposData = {
+      labels: ['Red', 'Orange'],
+      datasets: [
+        {
+          label: 'Grupo',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
+    this.trabajosData = {
+      labels: ['Red', 'Orange'],
+      datasets: [
+        {
+          label: 'Usuario',
+          data:[1,2]
+        }
+      ],
+      backgroundColor: Object.values(CHART_COLORS)
+    };
+
     parseOptions(Chart, chartOptions());
 
     let chartUsuarios = document.getElementById('chart-usuarios');
     this.usuariosChart = new Chart(chartUsuarios,{
       type:'bar',
       options: chartExample2.options,
-      data: chartExample2.data
+      data: this.usuariosData
     })
 
     let chartGrupos = document.getElementById('chart-grupos');
     this.gruposChart = new Chart(chartGrupos,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.gruposData
     })
 
     let chartTrabajos = document.getElementById('chart-trabajos');
     this.trabajosChart = new Chart(chartTrabajos,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.trabajosData
     })
+
+    this.updateOptions();
     
   }
 
 
   public updateOptions() {
+
+    this.restService.getUserCPU(this.clicked).subscribe((data:any)=>{
+      const user = [];
+      const horas = [];
+
+      data.forEach((d)=>{
+        user.push(d.User);
+        horas.push(d.Hours);
+      });
+
+      this.usuariosChart.data.labels = user;
+      this.usuariosChart.data.datasets[0].data = horas;
+
+      this.usuariosChart.update();
+
+    });
+
+    this.restService.getGroupCPU(this.clicked).subscribe((data:any)=>{
+      const grupos = [];
+      const horas = [];
+
+      data.forEach((d)=>{
+        grupos.push(d.Group);
+        horas.push(d.Hours);
+      });
+
+      this.gruposChart.data.labels = grupos;
+      this.gruposChart.data.datasets[0].data = horas;
+
+      this.gruposChart.update();
+
+    });
+
+    this.restService.getUserJob(this.clicked).subscribe((data:any)=>{
+      const user = [];
+      const trabajos = [];
+
+      data.forEach((d)=>{
+        user.push(d.User);
+        trabajos.push(d.Jobs);
+      });
+
+      this.trabajosChart.data.labels = user;
+      this.trabajosChart.data.datasets[0].data = trabajos;
+
+      this.trabajosChart.update();
+
+    });
+
   }
 
 }
