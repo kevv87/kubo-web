@@ -25,7 +25,7 @@ export class RestService {
 
   getDateJob(mes=false){
     const period = mes?'mes':'year';
-    return this.http.get('http://127.0.0.1:5000/DateJob/'+period, httpOptions);
+    return this.http.get('http://127.0.0.1:5000/dateJob/'+period, httpOptions);
   }
   getGroupCPU(mes=false){
     const period = mes?'mes':'year';

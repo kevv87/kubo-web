@@ -12,6 +12,22 @@
             <div class="col">
               <h2 class="mb-0">Trabajos por fecha</h2>
             </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -31,6 +47,22 @@
             <div class="col">
               <h2 class="mb-0">Trabajos por días de la semana</h2>
             </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -48,26 +80,23 @@
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
             <div class="col">
-              <h2 class="mb-0">Horas de cómputo por mes</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="chart">
-            <canvas class="chart-canvas" id="chart-mes"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-5">
-    <div class="col-xl">
-      <div class="card shadow">
-        <div class="card-header bg-transparent">
-          <div class="row align-items-center">
-            <div class="col">
               <h2 class="mb-0">Hora de inicio de trabajos</h2>
+            </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -87,6 +116,22 @@
           <div class="row align-items-center">
             <div class="col">
               <h2 class="mb-0">Hora de envío de trabajos</h2>
+            </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -108,6 +153,22 @@
             <div class="col">
               <h2 class="mb-0">Tiempo de duración de trabajos</h2>
             </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -126,7 +187,23 @@
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
             <div class="col">
-              <h2 class="mb-0">Ranking de nodos por trabajo</h2>
+              <h2 class="mb-0">Cantidad de nodos por trabajo</h2>
+            </div>
+            <div class="col">
+              <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[0];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}" data-toggle="tab" (click)="clicked=true;clicked1=false">
+                    <span class="d-none d-md-block">Mes</span>
+                    <span class="d-md-none">M</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="chart" data-target="#chart-sales"  (click)="data=datasets[1];updateOptions()">
+                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}" data-toggle="tab" (click)="clicked=false;clicked1=true">
+                    <span class="d-none d-md-block">Año</span>
+                    <span class="d-md-none">W</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

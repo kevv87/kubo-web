@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { RestService } from 'src/app/services/rest.service';
+import * as moment from 'moment';
 
 // core components
 import {
@@ -19,17 +21,30 @@ export class TrabajosComponent implements OnInit {
   public datasets: any;
   public data: any;
   public pieData:any;
+
+  //Data for the charts
+  public diaData;
+  public semanaData;
+  public inicioData;
+  public envioData;
+  public duracionData;
+  public rankingData;
+
+  // Charts
   public diaChart;
   public semanaChart;
-  public mesChart;
   public inicioChart;
   public envioChart;
   public duracionChart;
   public rankingChart;
+
+  // Variables de control
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
   private _seed = Date.now();
+
+  constructor(private restService: RestService){}
 
   rand(min, max) {
     min = min || 0;
@@ -87,30 +102,78 @@ export class TrabajosComponent implements OnInit {
       grey: 'rgb(201, 203, 207)'
     };
 
-    this.pieData = {
-      labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
-      datasets: [
+    this.data = this.datasets[0];
+
+    // Inicializando gráficos
+    this.diaData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
         {
-          label: 'Dataset 1',
-          data: this.numbers(NUMBER_CFG),
-          backgroundColor: Object.values(CHART_COLORS),
+          label:'Trabajos del día',
+          data:[1,2]
         }
       ]
     };
 
-    const exampleOptions = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: false
+    this.inicioData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Hora de inicio de trabajos',
+          data:[1,2]
         }
-      }
-    }
+      ]
+    }; 
 
-    this.data = this.datasets[0];
+    this.semanaData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Trabajos enviados',
+          data:[1,2]
+        }
+      ]
+    };
+
+    this.diaData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Trabajos enviados',
+          data:[1,2]
+        }
+      ]
+    }; 
+
+    this.envioData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Hora de envio',
+          data:[1,2]
+        }
+      ]
+    };
+
+    this.rankingData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Hora de envio',
+          data:[1,2]
+        }
+      ]
+    };
+
+    this.duracionData = {
+      labels:['dd/mm1','dd/mm2'],
+      datasets:[
+        {
+          label:'Trabajos del usuario',
+          data:[1,2]
+        }
+      ]
+    };
 
     parseOptions(Chart, chartOptions());
 
@@ -118,42 +181,35 @@ export class TrabajosComponent implements OnInit {
     this.inicioChart = new Chart(chartInicio, {
       type:'bar',
       options: chartExample2.options,
-      data: chartExample2.data
+      data: this.inicioData
     })
 
     let chartSemana = document.getElementById('chart-semana');
     this.semanaChart = new Chart(chartSemana,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
-    })
-
-    let chartMes = document.getElementById('chart-mes');
-    this.mesChart = new Chart(chartMes,{
-      type:'bar',
-      options:chartExample2.options,
-      data: chartExample2.data
+      data: this.semanaData
     })
 
     let chartDia = document.getElementById('chart-dia');
     this.diaChart = new Chart(chartDia,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.diaData
     })
 
     let chartEnvio = document.getElementById('chart-envio');
     this.envioChart = new Chart(chartEnvio,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.envioData
     })
 
     let chartRanking = document.getElementById('chart-ranking');
     this.rankingChart = new Chart(chartRanking,{
       type:'bar',
       options:chartExample2.options,
-      data: chartExample2.data
+      data: this.rankingData
     })
 
     let chartDuracion = document.getElementById('chart-duracion');
@@ -179,14 +235,134 @@ export class TrabajosComponent implements OnInit {
           }
         }
       },
-      data: chartExample2.data
-    })
+      data: this.duracionData
+    });
+
+    this.updateOptions();
 
     
   }
 
 
   public updateOptions() {
+
+    this.restService.getTimeJob(this.clicked).subscribe((data:any)=>{
+      const horas = [];
+      const trabajos = [];
+
+      data.forEach((d)=>{
+        horas.push(d.Time);
+        trabajos.push(d.Jobs);
+      });
+
+      this.duracionChart.data.labels = horas;
+      this.duracionChart.data.datasets[0].data = trabajos;
+
+      this.duracionChart.update();
+
+    });
+
+    this.restService.getWeekJob(this.clicked).subscribe((data:any)=>{
+
+      const dias = [];
+      const trabajos = [];
+
+      data.forEach((d)=>{
+        dias.push(d.Date);
+        trabajos.push(d.Hours);
+      });
+
+      this.semanaChart.data.labels = dias;
+      this.semanaChart.data.datasets[0].data = trabajos;
+
+      this.semanaChart.update();
+
+    });
+
+    this.restService.getDateJob(this.clicked).subscribe((data:any)=>{
+      const fechas = [];
+      const trabajos = [];
+
+      // Sorteando las fechas en orden ascendente
+      let fechaA, fechaB;
+
+      data.sort((a,b)=>{
+        fechaA = moment(a.Date,"YYYY-MM-DD");
+        fechaB = moment(b.Date, "YYYY-MM-DD");
+        if(fechaA.isBefore(fechaB)){
+          return -1;
+        }else{
+          return 1;
+        }
+      });
+
+      data.forEach((d)=>{
+        fechas.push(d.Date);
+        trabajos.push(d.Hours);
+      });
+
+      this.diaChart.data.labels = fechas;
+      this.diaChart.data.datasets[0].data = trabajos;
+
+      this.diaChart.update();
+
+    });
+
+    this.restService.getSubmitJob(this.clicked).subscribe((data:any)=>{
+      const horas = [];
+      const trabajos = [];
+
+      data.forEach((d)=>{
+        horas.push(d.Time);
+        trabajos.push(d.Jobs);
+      });
+
+      this.envioChart.data.labels = horas;
+      this.envioChart.data.datasets[0].data = trabajos;
+
+      this.envioChart.update();
+    });
+
+    this.restService.getNodeJob(this.clicked).subscribe((data:any)=>{
+      const nodos = [];
+      const trabajos = [];
+
+      data = data.sort((a, b) =>{
+        if(parseInt(a.Nodes) < parseInt(b.Nodes)){
+          return -1;
+        }else{
+          return 1;
+        }
+      })
+
+      data.forEach((d)=>{
+        nodos.push(d.Nodes);
+        trabajos.push(d.Cant);
+      });
+
+      this.rankingChart.data.labels = nodos;
+      this.rankingChart.data.datasets[0].data = trabajos;
+      
+      this.rankingChart.update();
+    });
+
+    this.restService.getHourJob(this.clicked).subscribe((data:any)=>{
+
+      const hours = [];
+      const trabajos = []; 
+
+      data.forEach((d)=>{
+        hours.push(d.Time);
+        trabajos.push(d.Jobs);
+      });
+
+      this.inicioChart.data.labels = hours;
+      this.inicioChart.data.datasets[0].data = trabajos;
+
+      this.inicioChart.update();
+
+    });
+
   }
 
 }

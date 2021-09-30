@@ -237,7 +237,7 @@ export class HorasComponent implements OnInit {
 
       // Sorteando las fechas en orden ascendente
       let fechaA, fechaB;
-      data.sort((a,b)=>{
+      data = data.sort((a,b)=>{
         fechaA = moment(a.Date,"YYYY-MM-DD");
         fechaB = moment(b.Date, "YYYY-MM-DD");
         if(fechaA.isBefore(fechaB)){
@@ -245,7 +245,8 @@ export class HorasComponent implements OnInit {
         }else{
           return 1;
         }
-      })
+      });
+
       data.forEach(d => {
         fechas.push(d.Date);
         horas.push(d.Hours);
