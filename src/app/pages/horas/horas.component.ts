@@ -246,7 +246,7 @@ export class HorasComponent implements OnInit {
           return 1;
         }
       });
-
+      
       data.forEach(d => {
         fechas.push(d.Date);
         horas.push(d.Hours);
