@@ -251,8 +251,8 @@ export class TrabajosComponent implements OnInit {
       const trabajos = [];
 
       data.forEach((d)=>{
-        horas.push(d.Time);
-        trabajos.push(d.Jobs);
+        horas.push(d.Elapsed);
+        trabajos.push(d.Quantity);
       });
 
       this.duracionChart.data.labels = horas;
@@ -266,10 +266,28 @@ export class TrabajosComponent implements OnInit {
 
       const dias = [];
       const trabajos = [];
+      const orderedWeekDays = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 
       data.forEach((d)=>{
-        dias.push(d.Date);
-        trabajos.push(d.Hours);
+        dias.push(d.weekday);
+        trabajos.push(d.startedJobs);
+      });
+
+      let index;
+      let tmp1;
+      let tmp2;
+      orderedWeekDays.forEach((fecha, i)=>{
+        // Encontramos el indice de cada dia ordenado en el array de fechas
+        index = dias.findIndex(e=>{
+          return e==fecha;
+        });
+        // Hacemos el swap del valor en index al espacio i
+        tmp1 = dias[i];
+        tmp2 = trabajos[i];
+        dias[i] = dias[index];
+        trabajos[i] = trabajos[index];
+        dias[index] = tmp1;
+        trabajos[index] = tmp2;
       });
 
       this.semanaChart.data.labels = dias;
@@ -287,8 +305,8 @@ export class TrabajosComponent implements OnInit {
       let fechaA, fechaB;
 
       data.sort((a,b)=>{
-        fechaA = moment(a.Date,"YYYY-MM-DD");
-        fechaB = moment(b.Date, "YYYY-MM-DD");
+        fechaA = moment(a.date,"YYYY-MM-DD");
+        fechaB = moment(b.date, "YYYY-MM-DD");
         if(fechaA.isBefore(fechaB)){
           return -1;
         }else{
@@ -297,8 +315,8 @@ export class TrabajosComponent implements OnInit {
       });
 
       data.forEach((d)=>{
-        fechas.push(d.Date);
-        trabajos.push(d.Hours);
+        fechas.push(d.date);
+        trabajos.push(d.startedJobs);
       });
 
       this.diaChart.data.labels = fechas;
@@ -313,8 +331,8 @@ export class TrabajosComponent implements OnInit {
       const trabajos = [];
 
       data.forEach((d)=>{
-        horas.push(d.Time);
-        trabajos.push(d.Jobs);
+        horas.push(d.hour);
+        trabajos.push(d.sentJobs);
       });
 
       this.envioChart.data.labels = horas;
@@ -336,7 +354,7 @@ export class TrabajosComponent implements OnInit {
       })
 
       data.forEach((d)=>{
-        nodos.push(d.Nodes);
+        nodos.push(d.NNodes);
         trabajos.push(d.Cant);
       });
 
