@@ -245,10 +245,10 @@ export class DashboardComponent implements OnInit {
 
     this.restService.getQueuePercentage(this.clicked).subscribe((data:any) => {
       // Actualizando los graficos de pastel
-      const dataAndalan = [data.andalan.Percentage, data.andalan.Total];
-      const dataNu = [data.nu.Percentage, data.nu.Total];
-      const dataNukwa = [data.nukwa.Percentage, data.nukwa.Total];
-      const dataDribe = [data.dribe.Percentage, data.dribe.Total];
+      const dataAndalan = [data.andalan.porcentajeUso, 100-data.andalan.porcentajeUso];
+      const dataNu = [data.nu.porcentajeUso, 100-data.nu.porcentajeUso];
+      const dataNukwa = [data.nukwa.porcentajeUso, 100-data.nukwa.porcentajeUso];
+      const dataDribe = [data.dribe.porcentajeUso, 100-data.dribe.porcentajeUso];
 
       this.andalanChart.data.datasets[0].data = dataAndalan;
       this.nuChart.data.datasets[0].data = dataNu;
@@ -264,10 +264,10 @@ export class DashboardComponent implements OnInit {
 
       // Actualizando grafico de barra 
       const arrayColas = [
-        {cola:data.andalan.Queue, percentage:parseFloat(data.andalan.Percentage)},
-        {cola:data.nukwa.Queue, percentage:parseFloat(data.nukwa.Percentage)},
-        {cola:data.dribe.Queue, percentage:parseFloat(data.dribe.Percentage)},
-        {cola:data.nu.Queue, percentage:parseFloat(data.nu.Percentage)}
+        {cola:data.andalan.nombreColas, percentage:parseFloat(data.andalan.porcentajeUso)},
+        {cola:data.nukwa.nombreColas, percentage:parseFloat(data.nukwa.porcentajeUso)},
+        {cola:data.dribe.nombreColas, percentage:parseFloat(data.dribe.porcentajeUso)},
+        {cola:data.nu.nombreColas, percentage:parseFloat(data.nu.porcentajeUso)}
       ];
 
       arrayColas.sort((a, b) =>-a.percentage+b.percentage);
