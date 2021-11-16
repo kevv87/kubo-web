@@ -8,6 +8,7 @@ import { TablesComponent } from '../../pages/tables/tables.component';
 import { HorasComponent } from 'src/app/pages/horas/horas.component';
 import { TrabajosComponent } from 'src/app/pages/trabajos/trabajos.component';
 import { UsuariosComponent } from 'src/app/pages/usuarios/usuarios.component';
+import { LoginComponent } from 'src/app/pages/login/login.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -17,5 +18,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'maps',           component: MapsComponent },
     { path: 'trabajos',       component: TrabajosComponent },
     { path: 'horas',          component: HorasComponent },
-    { path: 'usuarios',       component: UsuariosComponent}
+    { path: 'usuarios',       component: UsuariosComponent},
+    { path:'login',           component: LoginComponent}
 ];

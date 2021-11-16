@@ -370,8 +370,8 @@ export class TrabajosComponent implements OnInit {
       const trabajos = []; 
 
       data.forEach((d)=>{
-        hours.push(d.Time);
-        trabajos.push(d.Jobs);
+        hours.push(d.hour);
+        trabajos.push(d.startedJobs);
       });
 
       this.inicioChart.data.labels = hours;

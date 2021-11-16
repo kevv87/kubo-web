@@ -189,8 +189,11 @@ export class UsuariosComponent implements OnInit {
 
       data.forEach((d)=>{
         user.push(d.User);
-        horas.push(d.Hours);
+        horas.push(d.Elapsed);
       });
+
+      user.reverse()
+      horas.reverse()
 
       this.usuariosChart.data.labels = user;
       this.usuariosChart.data.datasets[0].data = horas;
@@ -205,8 +208,10 @@ export class UsuariosComponent implements OnInit {
 
       data.forEach((d)=>{
         grupos.push(d.Group);
-        horas.push(d.Hours);
+        horas.push(d.Elapsed);
       });
+      grupos.reverse()
+      horas.reverse()
 
       this.gruposChart.data.labels = grupos;
       this.gruposChart.data.datasets[0].data = horas;
@@ -221,8 +226,10 @@ export class UsuariosComponent implements OnInit {
 
       data.forEach((d)=>{
         user.push(d.User);
-        trabajos.push(d.Jobs);
+        trabajos.push(d.Quantity);
       });
+      user.reverse()
+      trabajos.reverse()
 
       this.trabajosChart.data.labels = user;
       this.trabajosChart.data.datasets[0].data = trabajos;
