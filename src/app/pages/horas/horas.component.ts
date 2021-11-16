@@ -248,8 +248,8 @@ export class HorasComponent implements OnInit {
       });
       
       data.forEach(d => {
-        fechas.push(d.Date);
-        horas.push(d.Hours);
+        fechas.push(d.date);
+        horas.push(d.hours);
       });
 
       this.diaChart.data.labels = fechas;
@@ -260,11 +260,29 @@ export class HorasComponent implements OnInit {
     });
 
     this.restService.getWeekCPU(this.clicked).subscribe((data:any)=>{
+      const orderedWeekDays = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
       const fechas = []; // Fechas encontradas en el analisis
       const horas = [];
       data.forEach(d => {
-        fechas.push(d.Date);
-        horas.push(d.Hours);
+        fechas.push(d.weekday);
+        horas.push(d.hours);
+      });
+
+      let index;
+      let tmp1;
+      let tmp2;
+      orderedWeekDays.forEach((fecha, i)=>{
+        // Encontramos el indice de cada dia ordenado en el array de fechas
+        index = fechas.findIndex(e=>{
+          return e==fecha;
+        });
+        // Hacemos el swap del valor en index al espacio i
+        tmp1 = fechas[i];
+        tmp2 = horas[i];
+        fechas[i] = fechas[index];
+        horas[i] = horas[index];
+        fechas[index] = tmp1;
+        horas[index] = tmp2;
       });
 
       this.semanaChart.data.labels = fechas;
@@ -274,12 +292,32 @@ export class HorasComponent implements OnInit {
     });
 
     this.restService.getMonthCPU(this.clicked).subscribe((data:any)=>{
-      const fechas = []; // Fechas encontradas en el analisis
-      const horas = [];
+      let fechas = []; // Fechas encontradas en el analisis
+      let horas = [];
+      const orderedMonths = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
       data.forEach(d => {
-        fechas.push(d.Date);
-        horas.push(d.Hours);
+        fechas.push(d.month);
+        horas.push(d.hours);
       });
+
+      let index, tmp1, tmp2;
+      orderedMonths.forEach((fecha, i)=>{
+        // Encontramos el indice de cada dia ordenado en el array de fechas
+        index = fechas.findIndex(e=>{
+          return e==fecha;
+        });
+        if(index!=-1){
+          // Hacemos el swap del valor en index al espacio i
+          tmp1 = fechas[i];
+          tmp2 = horas[i];
+          fechas[i] = fechas[index];
+          horas[i] = horas[index];
+          fechas[index] = tmp1;
+          horas[index] = tmp2;
+        }
+      });
+      fechas = fechas.filter(e=>e!==undefined);
+      horas = horas.filter(e=>e!==undefined);
 
       this.mesChart.data.labels = fechas;
       this.mesChart.data.datasets[0].data = horas;
@@ -292,8 +330,11 @@ export class HorasComponent implements OnInit {
       const horas = [];
       data.forEach(d => {
         particiones.push(d.Partition);
-        horas.push(d.Hours);
+        horas.push(d.Elapsed);
       });
+
+      particiones.reverse();
+      horas.reverse();
 
       this.usoChart.data.labels = particiones;
       this.usoChart.data.datasets[0].data = horas;
@@ -305,8 +346,8 @@ export class HorasComponent implements OnInit {
       const colas = []; // Fechas encontradas en el analisis
       const horas = [];
       data.forEach(d => {
-        colas.push(d.Queue);
-        horas.push(d.Hours);
+        colas.push(d.nombreColas);
+        horas.push(d.horasUtilizadas);
       });
 
       this.colasChart.data.labels = colas;
