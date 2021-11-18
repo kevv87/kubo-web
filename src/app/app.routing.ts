@@ -9,11 +9,11 @@ import { AuthGuard } from './services/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes =[
-  {
+  /*{
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
-  }, {
+  }, */{
     path: '',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
@@ -25,7 +25,7 @@ const routes: Routes =[
       }
     ]
   }, {
-    path: '',
+    path: 'auth',
     component: AuthLayoutComponent,
     children: [
       {
@@ -33,11 +33,7 @@ const routes: Routes =[
         loadChildren: () => import('src/app/layouts/auth-layout/auth-layout.module').then(m => m.AuthLayoutModule)
       }
     ]
-  },
-  {
-    path:'login',
-    component: LoginComponent
-  },
+  }, 
   {
     path: '**',
     redirectTo: 'dashboard'
