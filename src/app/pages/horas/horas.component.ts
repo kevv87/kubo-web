@@ -241,9 +241,9 @@ export class HorasComponent implements OnInit {
         fechaA = moment(a.Date,"YYYY-MM-DD");
         fechaB = moment(b.Date, "YYYY-MM-DD");
         if(fechaA.isBefore(fechaB)){
-          return -1;
-        }else{
           return 1;
+        }else{
+          return -1;
         }
       });
       
