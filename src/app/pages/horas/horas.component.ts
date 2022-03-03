@@ -333,8 +333,8 @@ export class HorasComponent implements OnInit {
         horas.push(d.Elapsed);
       });
 
-      particiones.reverse();
-      horas.reverse();
+      //particiones.reverse();
+      //horas.reverse();
 
       this.usoChart.data.labels = particiones;
       this.usoChart.data.datasets[0].data = horas;
