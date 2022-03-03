@@ -342,8 +342,8 @@ export class TrabajosComponent implements OnInit {
     });
 
     this.restService.getNodeJob(this.clicked).subscribe((data:any)=>{
-      const nodos = [];
-      const trabajos = [];
+      let nodos = [];
+      let trabajos = [];
 
       data = data.sort((a, b) =>{
         if(parseInt(a.Nodes) < parseInt(b.Nodes)){
@@ -357,6 +357,9 @@ export class TrabajosComponent implements OnInit {
         nodos.push(d.NNodes);
         trabajos.push(d.Cant);
       });
+      
+      nodos = nodos.reverse();
+      trabajos = trabajos.reverse();
 
       this.rankingChart.data.labels = nodos;
       this.rankingChart.data.datasets[0].data = trabajos;
