@@ -22,6 +22,12 @@ export class DashboardComponent implements OnInit {
   public data: any;
   public pieData:any;
 
+  // Cantidad de nodos por cola
+  nAndalan:number=6;
+  nDribe:number=7;
+  nNu:number=31;
+  nNukwa:number=8;
+
   // Numbers
   public jobs;
   public users;
@@ -260,7 +266,13 @@ export class DashboardComponent implements OnInit {
       this.nukwaChart.update();
       this.dribeChart.update();
 
-      this.percentage = (((parseFloat(dataAndalan[0])+parseFloat(dataNu[0])+parseFloat(dataNukwa[0])+parseFloat(dataDribe[0]))/400)*100).toFixed(2);
+      this.percentage = 
+        (((
+          parseFloat(dataAndalan[0])*this.nAndalan+
+          parseFloat(dataNu[0])*this.nNu+
+          parseFloat(dataNukwa[0])*this.nNukwa+
+          parseFloat(dataDribe[0])*this.nDribe)
+         /(this.nNu+this.nAndalan+this.nDribe+this.nNukwa))).toFixed(2);
 
       // Actualizando grafico de barra 
       const arrayColas = [

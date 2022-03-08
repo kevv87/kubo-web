@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { environment } from 'src/environments/environment';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -10,7 +12,7 @@ const httpOptions = {
 })
 export class RestService {
 
-  private url:string='http://127.0.0.1:5000';
+  private url:string=environment.url;
 
   constructor(private http:HttpClient) { }
 
