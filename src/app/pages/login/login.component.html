@@ -27,7 +27,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-user"></i></span>
                 </div>
-                <input class="form-control" placeholder="Usuario" [(ngModel)]='user' type="email">
+                <input id='user' class="form-control" placeholder="Usuario" [(ngModel)]='user' type="email">
               </div>
             </div>
             <div class="form-group">
@@ -35,11 +35,11 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                 </div>
-                <input class="form-control" [(ngModel)]='pass' placeholder="Contraseña" type="password">
+                <input id="password" class="form-control" [(ngModel)]='pass' placeholder="Contraseña" type="password">
               </div>
             </div>
             <div class="text-center">
-              <button type="button" (click)='login()' class="btn btn-primary my-4">Iniciar sesión</button>
+              <button id="loginBtn" type="button" (click)='login()' class="btn btn-primary my-4">Iniciar sesión</button>
             </div>
           </form>
         </div>
