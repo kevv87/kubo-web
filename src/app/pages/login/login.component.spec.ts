@@ -88,7 +88,6 @@ describe('LoginComponent', () => {
           status:'ok'
         }
       ));
-      spyOn
       // Test
       component.login();
       // Asserting
