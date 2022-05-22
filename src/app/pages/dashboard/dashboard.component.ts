@@ -219,8 +219,35 @@ export class DashboardComponent implements OnInit {
       }
       ]
     }
-
-    this.percentageSemanaData = this.percentageHoraData; 
+    
+    this.percentageSemanaData = {
+      datasets: [
+      {
+        label : 'Cola Nu',
+        data:[1,0], 
+        borderColor:'rgba(255,99,132)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Nukwa',
+        data:[1,0],
+        borderColor:'rgba(255,159,64)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Dribe',
+        data:[1,0],
+        borderColor:'rgba(255,205,86)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Andalan',
+        data:[1,0],
+        borderColor: 'rgba(153,102,255)',
+        backgroundColor: 'rgba(0,0,0,0)'
+      }
+      ]
+    }
 
     this.nuChart = new Chart(chartNu, {
       type:'pie',
@@ -366,6 +393,8 @@ export class DashboardComponent implements OnInit {
           percentageArray[index] = tmp2;
         });
 
+        console.log(data);
+
         this.percentageSemanaData.datasets[indexCola].data = percentageArray;
         this.percentageSemanaData.labels = weekDays;
         this.percentageSemanaChart.update();
@@ -378,6 +407,7 @@ export class DashboardComponent implements OnInit {
         data.forEach(entry=>{
           const porcentaje = entry.porcentajeUtilizacion;
           porcentaje > 100 ? percentageArray.push(100):percentageArray.push(porcentaje);
+          hours.push(entry.hour);
         });
 
         this.percentageHoraData.datasets[indexCola].data = percentageArray;
