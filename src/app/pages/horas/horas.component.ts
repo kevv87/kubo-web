@@ -77,7 +77,6 @@ export class HorasComponent implements OnInit {
       }
     }
 
-    console.log(data);
   
     return data;
   }
@@ -333,8 +332,8 @@ export class HorasComponent implements OnInit {
         horas.push(d.Elapsed);
       });
 
-      //particiones.reverse();
-      //horas.reverse();
+      particiones.reverse();
+      horas.reverse();
 
       this.usoChart.data.labels = particiones;
       this.usoChart.data.datasets[0].data = horas;
@@ -349,6 +348,9 @@ export class HorasComponent implements OnInit {
         colas.push(d.nombreColas);
         horas.push(d.horasUtilizadas);
       });
+      
+      colas.reverse();
+      horas.reverse();
 
       this.colasChart.data.labels = colas;
       this.colasChart.data.datasets[0].data = horas;

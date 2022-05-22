@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login(){
     this.restService.login(this.user, this.pass).subscribe((data)=>{
-      console.log(data);
       this.authService.setLoggedIn(true);
       this.router.navigate(['/#/dashboard']);
     }, err=>{

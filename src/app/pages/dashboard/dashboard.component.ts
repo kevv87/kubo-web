@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { utils } from 'protractor';
 import { RestService } from 'src/app/services/rest.service';
-import { isJSDocThisTag } from 'typescript';
 
 // core components
 import {
@@ -39,6 +39,8 @@ export class DashboardComponent implements OnInit {
   public nukwaData;
   public nuData;
   public dribeData;
+  public percentageHoraData;
+  public percentageSemanaData;
 
   // Charts
   public salesChart;
@@ -47,6 +49,8 @@ export class DashboardComponent implements OnInit {
   public andalanChart;
   public dribeChart;
   public colasChart;
+  public percentageHoraChart;
+  public percentageSemanaChart;
 
   // Month/Year buttons
   public clicked: boolean = true;
@@ -86,7 +90,6 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    console.log(data);
   
     return data;
   }
@@ -142,6 +145,8 @@ export class DashboardComponent implements OnInit {
     let chartNukwa = document.getElementById('uso-nukwa');
     let chartAndalan = document.getElementById('uso-andalan');
     let chartDribe = document.getElementById('uso-dribe');
+    let chartPercentageSemana = document.getElementById('porcentaje-semana');
+    let chartPercentageHora = document.getElementById('porcentaje-hora')
 
     // Inicializando graficos
     this.andalanData = {
@@ -186,6 +191,37 @@ export class DashboardComponent implements OnInit {
       ]
     };
 
+    this.percentageHoraData = {
+      datasets: [
+      {
+        label : 'Cola Nu',
+        data:[1,0], 
+        borderColor:'rgba(255,99,132)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Nukwa',
+        data:[1,0],
+        borderColor:'rgba(255,159,64)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Dribe',
+        data:[1,0],
+        borderColor:'rgba(255,205,86)',
+        backgroundColor: 'rgba(0,0,0,0)' 
+      },
+      {
+        label: 'Cola Andalan',
+        data:[1,0],
+        borderColor: 'rgba(153,102,255)',
+        backgroundColor: 'rgba(0,0,0,0)'
+      }
+      ]
+    }
+
+    this.percentageSemanaData = this.percentageHoraData; 
+
     this.nuChart = new Chart(chartNu, {
       type:'pie',
       data:this.nuData,
@@ -209,6 +245,18 @@ export class DashboardComponent implements OnInit {
       type:'pie',
       data:this.dribeData,
       options:exampleOptions,
+    })
+
+    this.percentageSemanaChart = new Chart(chartPercentageSemana, {
+      type:'line',
+      data:this.percentageSemanaData,
+      options:exampleOptions
+    })
+
+    this.percentageHoraChart = new Chart(chartPercentageHora, {
+      type:'line',
+      data:this.percentageHoraData,
+      options:exampleOptions
     })
 
     const colasData = {
@@ -288,6 +336,58 @@ export class DashboardComponent implements OnInit {
       this.colasChart.update();
 
     }); 
+
+    const nombreColas = ['nu','nukwa','dribe', 'andalan'];
+    nombreColas.forEach((cola, indexCola)=>{
+
+      this.restService.getWeekPercentage(this.clicked,cola).subscribe((data:any)=>{
+        const percentageArray = [];  
+        const orderedWeekDays = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+        const weekDays = [];
+
+        data.forEach(entry=>{
+          weekDays.push(entry.weekday);
+          const porcentaje = entry.porcentajeUtilizacion;
+          porcentaje > 100 ? percentageArray.push(100):percentageArray.push(porcentaje);
+        });
+
+        orderedWeekDays.forEach((fecha, i)=>{
+          let tmp1, tmp2, index;
+          // Encontramos el indice de cada dia ordenado en el array de fechas
+          index = weekDays.findIndex(e=>{
+            return e==fecha;
+          });
+          // Hacemos el swap del valor en index al espacio i
+          tmp1 = weekDays[i];
+          tmp2 = percentageArray[i];
+          weekDays[i] = weekDays[index];
+          percentageArray[i] = percentageArray[index];
+          weekDays[index] = tmp1;
+          percentageArray[index] = tmp2;
+        });
+
+        this.percentageSemanaData.datasets[indexCola].data = percentageArray;
+        this.percentageSemanaData.labels = weekDays;
+        this.percentageSemanaChart.update();
+      });
+
+      this.restService.getHourPercentage(this.clicked,cola).subscribe((data:any)=>{
+        const hours = [];
+        const percentageArray = [];
+
+        data.forEach(entry=>{
+          const porcentaje = entry.porcentajeUtilizacion;
+          porcentaje > 100 ? percentageArray.push(100):percentageArray.push(porcentaje);
+        });
+
+        this.percentageHoraData.datasets[indexCola].data = percentageArray;
+        this.percentageHoraData.labels = hours;
+        this.percentageHoraChart.update();
+
+      })
+
+    })
+
   }
 
 }

@@ -346,7 +346,7 @@ export class TrabajosComponent implements OnInit {
       let trabajos = [];
 
       data = data.sort((a, b) =>{
-        if(parseInt(a.Nodes) < parseInt(b.Nodes)){
+        if(parseInt(a.Cant) < parseInt(b.Cant)){
           return -1;
         }else{
           return 1;
